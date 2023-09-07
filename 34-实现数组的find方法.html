@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义find数组方法
+      Array.prototype.find = function (execute) {
+        // 判断参数是否为一个函数,如果不是就抛出错误
+        if (!execute instanceof Function) throw 'execute is not a function';
+
+        // 目标数组
+        let arr = this;
+
+        // 新数组
+        let newArr = [];
+
+        // 循环目标数组,调用execute方法
+        for (let i = 0; i < arr.length; i++) {
+          const item = arr[i];
+          newArr.push(execute(item, i, arr) ? item : undefined);
+        }
+
+        // 循环新数组
+        // 根据find方法特性,只有查找到满足条件的元素才会返回这个元素,否则返回undefined
+        for (let i = 0; i < newArr.length; i++) {
+          const item = newArr[i];
+          if (item) {
+            return item;
+          }
+        }
+
+        return undefined;
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      console.log(arr.find(item => item === 10));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 防抖:就是在指定的时间内只会执行一次,如果没有超过这个时间再次执行,就会将这个时间重置为0,然后再重新计算,就类似于回城一样,一旦被打断,就要重新回城
+       */
+      let num = 0;
+
+      // 防抖函数
+      const debounceFn = (fn, duration = 2000, ...args) => {
+        // 首先创建一个定时器标识
+        let timer = null;
+        // 注意这里一定要return,否则mouseFn将不会执行或者无法获取到事件对象event以及其他的参数
+        return function (event) {
+          // 每次触发此函数时都判断一下timer是否已被赋值(被赋值表示当前有定时器/函数正在执行),如果正在执行,就会将之前的定时器清空,不会再执行
+          if (timer) clearInterval(timer);
+          // 给timer赋值定时器的标识
+          timer = setTimeout(function () {
+            // 如果有fn的话就执行fn,并且通过apply使mouseFn和这里的fn同一this
+            fn && fn.apply(this, [event, ...args]);
+          }, duration);
+        };
+      };
+
+      // 要执行的函数
+      const mouseFn = (e, num) => {
+        console.log(e);
+        console.log(num++);
+      };
+      window.addEventListener('mousemove', debounceFn(mouseFn, 100, num));
+    </script>
+  </body>
+</html>

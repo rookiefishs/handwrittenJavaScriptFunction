@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义map数组方法
+      Array.prototype.map = function (execute) {
+        // 判断参数是否是一个函数
+        if (!execute instanceof Function) throw 'execute is not a function';
+
+        // 获取到循环的数组this
+        let arr = this;
+
+        // 返回目标值数组
+        let newArr = [];
+
+        // 循环目标数组
+        for (let i = 0; i < arr.length; i++) {
+          const item = arr[i];
+
+          // map方法接受一个参数,这个参数是一个函数,这个函数的参数是当前循环的项,索引值,数组,返回值是一个新的值
+          newArr.push(execute(item, i, arr));
+        }
+
+        // map方法返回一个新数组
+        return newArr;
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      let newArr = arr.map(item => {
+        return item + 1;
+      });
+      console.log(newArr);
+    </script>
+  </body>
+</html>

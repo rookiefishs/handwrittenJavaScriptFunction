@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 简介:Object.create()方法创建一个新对象,使用现有的对象来提供新创建一个对象的__proto__
+      const myCreate = (proto, propertiesObject) => {
+        function F() {}
+
+        // 将传入的对象作为原型
+        F.prototype = proto;
+
+        // 返回这个对象
+        return new F();
+      };
+
+      const person = {
+        isHuman: false,
+        name: 'jack',
+        printIntroduction: function () {
+          console.log(`My name is ${this.name}. Am I human? ${this.isHuman}`);
+        },
+      };
+
+      // 此时me的内容为空,但是me的prototype则是person的内容
+      const me = myCreate(person);
+      console.log(me);
+
+      // 设置me的name和isHuman,所以此时me有name和isHuman参数,并且prototype中仍然存在person的数据
+      me.name = 'Matthew';
+      me.isHuman = true;
+
+      // 返回上方me设置的内容
+      me.printIntroduction();
+
+      // 返回person自己的内容
+      person.printIntroduction();
+    </script>
+  </body>
+</html>

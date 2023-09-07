@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 实现sleep函数
+      // time:延迟的时间(毫秒)
+      const mySleep = async time => {
+        // 获取当前时间戳
+        const currentDate = new Date().getTime();
+        let flag = true;
+        while (flag) {
+          // 当前时间戳减去执行此函数时的时间戳得到差值,这个差值大于等于指定的时间才会结束循环,也就起到的阻塞主线程的效果了
+          if (new Date().getTime() - currentDate >= time) {
+            flag = false;
+          }
+        }
+      };
+      console.log(new Date().getTime());
+      mySleep(10000);
+      console.log(new Date().getTime());
+    </script>
+  </body>
+</html>

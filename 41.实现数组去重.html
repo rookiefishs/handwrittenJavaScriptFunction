@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // arr:目标数组
+      // isObj:是否是复杂数据类型
+      const arrDuplicateRemoval = (arr, isObj = false) => {
+        let myArr = [];
+        // 如果没有标识的话
+        if (!isObj) {
+          arr = [...Array.from(new Set(arr))];
+          return arr;
+        } else {
+          // 给数组的每一项转换为json类型
+          myArr = arr.map(item => JSON.stringify(item));
+          // 数组去重
+          arr = [...Array.from(new Set(myArr))];
+          // 转换为对象/数组类型
+          return arr.map(item => JSON.parse(item));
+        }
+      };
+      console.log(
+        arrDuplicateRemoval(
+          [
+            {
+              id: 1,
+            },
+            {
+              id: 1,
+            },
+            {
+              id: 2,
+            },
+            {
+              id: 3,
+            },
+          ],
+          true
+        )
+      );
+    </script>
+  </body>
+</html>

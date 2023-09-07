@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 实现数组的乱序输出
+       */
+      // 源数组
+      const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      // 在arr的原型上添加乱序输出方法
+      arr.__proto__.disorderedOutput = function () {
+        // 实现一个随机数方法,根据最大值和最小值返回中间数
+        const myRandom = (m, n) => {
+          return Math.floor(Math.random() * (m - n) + n);
+        };
+
+        // 最终返回的数组
+        let myArr = [];
+        // 获取随机数的标识
+        let flag = true;
+        // 随机数标识存放的数组
+        let indexArr = [];
+        while (flag) {
+          // 随机拿到0-调用数组的长度
+          const currentIndex = myRandom(0, this.length);
+
+          // 查看本次随机拿到的值是否重复
+          if (!indexArr.includes(currentIndex)) {
+            // 不重复就添加进标识数组
+            indexArr.push(currentIndex);
+            // 如果拿到的值的个数和调用数组的长度一样就停止循环
+          } else if (indexArr.length === this.length) {
+            flag = false;
+          }
+        }
+
+        // 通过索引数组indexArr给myArr返回数组复制,形成乱序数组
+        for (let i = 0; i < indexArr.length; i++) {
+          myArr[i] = indexArr[i];
+        }
+        return myArr;
+        // 循环 调用者(这里的this是arr)
+        // 随机索引 不重复
+      };
+
+      // 调用乱序输出方法
+      console.log(arr.disorderedOutput());
+    </script>
+  </body>
+</html>

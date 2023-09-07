@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 实现数组的filter方法
+       */
+      // 新建一个数组
+      const arr = [
+        {
+          name: 'wzy',
+          id: 1,
+          bool: false,
+        },
+        {
+          name: 'ccl',
+          id: 2,
+          bool: true,
+        },
+        {
+          name: 'wzz',
+          id: 3,
+          bool: true,
+        },
+      ];
+      // 在数组的原型中新建一个filter方法
+      arr.__proto__.myFilter = function (fn) {
+        // filter方法返回的是一个新数组，所以这里我们需要再自己的filter方法中新建一个数组，用于返回最终结果
+        const newArr = [];
+
+        // 循环调用者(这里是arr)
+        for (let i = 0; i < this.length; i++) {
+          // 当fn的返回值为true的时候才将当前循环项添加进自己的filter方法中所维护的数组
+          fn(this[i], i, this) && newArr.push(this[i]);
+        }
+
+        // 添加完毕之后将满足条件的数据返回
+        return newArr;
+      };
+
+      // 使用自己的filter方法
+      console.log(arr.myFilter(item => !item.bool));
+
+      // 使用原生的filter方法
+      console.log(arr.filter(item => !item.bool));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义concat数组方法
+      Array.prototype.concat = function (arr) {
+        // 判断参数是否为一个数组,如果不是就抛出错误
+        if (!arr instanceof Array) throw 'execute is not a Array';
+
+        // 目标数组
+        let targetArr = this;
+
+        // 返回一个新数组
+        return [...targetArr, ...arr];
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      let arr2 = [1, 2, 3, 4, 5, 6];
+      console.log(arr.concat(arr2));
+    </script>
+  </body>
+</html>

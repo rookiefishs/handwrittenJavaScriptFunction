@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义forEach数组方法
+      Array.prototype.forEach = function (execute) {
+        // 判断参数是否为一个函数,如果不是就抛出错误
+        if (!execute instanceof Function) throw 'execute is not a function';
+
+        // 目标数组
+        let arr = this;
+
+        // 循环目标数组,调用execute方法
+        for (let i = 0; i < arr.length; i++) {
+          const item = arr[i];
+          execute(item, i, arr);
+        }
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      arr.forEach(item => {
+        console.log(item);
+      });
+    </script>
+  </body>
+</html>

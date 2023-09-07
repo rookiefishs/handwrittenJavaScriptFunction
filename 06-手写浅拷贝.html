@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const obj = {
+        name: 'wzy',
+        age: 18,
+        hobby: ['打游戏', '写代码', '跑步'],
+        myInfo: {
+          height: 180,
+          weight: 160,
+        },
+        sayHi() {
+          console.log('hi');
+        },
+      };
+
+      // 通过...展开运算符实现浅拷贝
+      const newObj = { ...obj };
+
+      console.log(newObj);
+
+      // obj内部的简单数据类型不受影响
+      newObj.name = '666';
+      // obj内部的引用数据类型受到影响
+      newObj.hobby[1] = '睡觉';
+      console.log(newObj, '更改内容之后的新对象');
+      console.log(obj, '更改内容之后的老对象');
+    </script>
+  </body>
+</html>

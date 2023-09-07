@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 创建自定义promise类
+      class MyPromise {
+        // 设置构造函数,接收执行器回调函数
+        constructor(execute) {
+          if (typeof execute !== 'function') throw 'execute not is a function';
+          this.state = 'pendding';
+          this.result = null;
+          this.callBacks = [];
+
+          // 创建this变量
+          let _that = this;
+
+          // 设置执行器函数的resolve参数
+          function resolve(data) {
+            // 判断状态是否是pendding,promise的状态只能修改一次pendding->resolved   pendding->rejected
+            if (_that.state !== 'pendding') return;
+
+            // 设置默认值
+            _that.state = 'resolved';
+            _that.result = data;
+
+            // 循环调用.then的回调函数
+            let list = _that.callBacks.filter(item => item.type === 'resolved');
+            if (list.length !== 0) {
+              list.forEach(item => {
+                item.onResolved(data);
+              });
+            }
+          }
+
+          // 设置执行器函数的reject参数
+          function reject(data) {
+            // 判断状态是否是pendding,promise的状态只能修改一次pendding->resolved   pendding->rejected
+            if (_that.state !== 'pendding') return;
+
+            // 设置默认值
+            _that.state = 'rejected';
+            _that.result = data;
+
+            // 循环调用.then的回调函数
+            let list = _that.callBacks.filter(item => item.type === 'rejected');
+            if (list.length !== 0) {
+              list.forEach(item => {
+                item.onRejected(data);
+              });
+            }
+          }
+
+          // 执行 执行器函数
+          execute(resolve, reject);
+        }
+
+        // .then方法
+        then(
+          resolved = () => {},
+          rejected = data => {
+            throw data;
+          }
+        ) {
+          return new MyPromise((resolve, reject) => {
+            // 辅助函数
+            function _callbackFn(type, data) {
+              // 获取返回值
+              let result = type(data);
+
+              // 判断返回值是否为promise
+              if (result instanceof MyPromise) {
+                // 是promise
+                result.then(
+                  res => {
+                    resolve(res);
+                  },
+                  req => {
+                    reject(res);
+                  }
+                );
+              } else {
+                // 不是promise
+                resolve(result);
+              }
+            }
+
+            // 如果状态为resolved 就表示promise的值已经设置为成功了
+            if (this.state === 'resolved') {
+              _callbackFn(resolved, this.result);
+            }
+
+            // 如果状态为rejected 就表示promise的值已经设置为失败了
+            if (this.state === 'rejected') {
+              console.log('rejected');
+              _callbackFn(rejected, this.result);
+            }
+
+            // 如果状态依旧为pendding 就表示异步任务还没有结束,将回调函数添加到数组中,等到回调任务结束时调用即可
+            if (this.state === 'pendding') {
+              let _that = this;
+              this.callBacks.push(
+                {
+                  onResolved: () => _callbackFn(resolved, _that.result),
+                  type: 'resolved',
+                },
+                {
+                  onRejected: () => _callbackFn(rejected, _that.result),
+                  type: 'rejected',
+                }
+              );
+            }
+          });
+        }
+
+        // .catch方法
+        catch(req) {
+          return this.then(null, req);
+        }
+
+        // .all方法
+        static all(promises) {
+          // 判断参数是否是一个数组,如果不是数组进直接抛出错误
+          if (!Array.isArray(promises)) throw 'promises is not a Array';
+
+          // 返回一个promise对象
+          return new MyPromise((resolve, reject) => {
+            // 创建一个数组,用于接收成功的promise的值
+            let arr = [];
+
+            // 循环参数数组
+            for (let i = 0; i < promises.length; i++) {
+              // 获取每一项promise
+              let item = promises[i];
+
+              // 如果参数不是promise，就将其转换为promsie
+              if (!item instanceof MyPromise) {
+                item = new MyPromise((resolve, reject) => {
+                  resolve(item);
+                });
+              }
+
+              // 如果参数是promise,就调用promise的.then方法进行成功和失败的方法调用
+              item.then(
+                res => {
+                  arr[i] = res;
+
+                  // 根据.all方法的特性,循环所有的promise,只有所有的promise的返回值都是正确时才表示.all返回的promise是正确的
+                  if (arr.filter(item => item).length === promises.length) {
+                    resolve(arr);
+                  }
+                },
+                req => {
+                  // 循环的promise中有任意一个状态是错误的,那么.all返回的值就是错误的
+                  reject(req);
+                }
+              );
+            }
+          });
+        }
+      }
+
+      let p1 = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(111);
+        }, 1000);
+      });
+      let p2 = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(222);
+        }, 1000);
+      });
+      let p3 = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(333);
+        }, 1000);
+      });
+      let p4 = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          reject(444);
+        }, 1000);
+      });
+      let p5 = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(555);
+        }, 1000);
+      });
+
+      console.log(MyPromise.all([p1, p2, p3, p4, p5]));
+    </script>
+  </body>
+</html>

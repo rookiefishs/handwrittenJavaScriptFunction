@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 手写apply方法:
+       * s 目标this
+       * arge 调用函数时填入的参数
+       */
+      Function.prototype.apply = function (s, arge) {
+        // 判断目标this是否为空,如果为空就设置为全局对象,反之则设置为object
+        s = s === null || s === undefined ? globalThis : Object(s);
+        // 创建一个不会重复的key
+        let key = Symbol('temp');
+
+        // 使用属性描述符设置s中添加key属性，并且值为调用的函数
+        Object.defineProperty(s, key, {
+          enumerable: false,
+          value: this,
+        });
+
+        // 调用设置之后的this,此时内部的key方法就是对应的this函数,这个函数此时的this就会变为设置好的s了(目标this),并且通过拓展运算符传递参数
+        return s[key](...arge);
+      };
+
+      let obj = {
+        a: 1,
+        fn(q, w, e, r) {
+          return this.a + 1 + (q || 0) + (w || 0) + (e || 0) + (r || 0);
+        },
+      };
+
+      let obj2 = {
+        a: 4,
+      };
+      console.log(obj.fn(1, 2, 3)); // 8 因为此时的this.a还是1
+
+      let newFn = obj.fn.apply(obj2, [0, 0, 0, 0]); // 修改this并调用fn函数,此时的this为5,因为传递的参数都为0,并且此时的this.a为4了
+      console.log(newFn);
+    </script>
+  </body>
+</html>

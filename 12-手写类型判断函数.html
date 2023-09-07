@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 手写类型判断函数
+      const typeJudeg = param => {
+        // console.log(typeof param);
+        switch (typeof param) {
+          case 'string':
+            return '字符串';
+            break;
+          case 'number':
+            return '数字';
+            break;
+          case 'boolean':
+            return '布尔值';
+            break;
+          case 'undefined':
+            return '未定义';
+            break;
+          case 'function':
+            return '函数';
+            break;
+          case 'bigint':
+            return '大数字bigint';
+            break;
+          case 'symbol':
+            return '唯一标识symbol';
+            break;
+          case 'object':
+            // null array object类型都会打印为object,所以需要在这里进行判断
+            if (param === null) return '空';
+            if (param instanceof Array) return '数组';
+            if (param instanceof Object) return '对象';
+            break;
+          default:
+            break;
+        }
+      };
+
+      console.log(typeJudeg());
+    </script>
+  </body>
+</html>

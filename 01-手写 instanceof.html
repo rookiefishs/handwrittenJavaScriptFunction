@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const myInstanceOf = (father, child) => {
+        // 拿到father的原型对象
+        let fp = father.prototype;
+
+        // 拿到child的对象原型
+        let cp = child.__proto__;
+
+        // 只要cp存在,就一直循环,就等同于根据child的原型链一直向上查找,直到找到原型链的尽头
+        while (cp) {
+          // 如果当前child的对象原型等于了father原型对象,就表示child是father的实例,所以return true
+          if (cp === fp) {
+            return true;
+          }
+          // 因为原型链是会不断向上找的,所以每次都重新赋值cp,直到找到原型链的尽头null,此时while就不再成立,所以就不会在执行,于是就会return false
+          cp = cp.__proto__;
+        }
+        return false;
+      };
+      const arr = [];
+      const str = '';
+      console.log(myInstanceOf(Array, arr));
+      console.log(myInstanceOf(Number, str));
+    </script>
+  </body>
+</html>

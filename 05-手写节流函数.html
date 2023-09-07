@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 节流:就是在指定的时间内只会执行一次,下一次执行要等到这个时间过才行,就类似于打游戏时技能的冷却一样,只有等到冷却时间到了才可以用
+       */
+      let num = 0;
+
+      // 节流函数
+      const throttleFn = (fn, duration = 2000, ...args) => {
+        // 初始设置标识为false
+        let flag = false;
+        return event => {
+          // 当标识为true时return阻止下面代码执行(flag为true标识有函数正在运行)
+          if (flag) return;
+          // 如果标识为false的话,就表示没有待执行的节流,就将其设置为true,如果后面再次触发节流函数的话,此时的flag就是true,就会触发上面的if语句,然后return
+          flag = true;
+          setTimeout(() => {
+            // 执行指定的事件函数
+            fn && fn.apply(this, [event, ...args]);
+            // 执行完毕时将flag改回false,防止阻止后续节流函数的运行
+            flag = false;
+          }, duration);
+        };
+      };
+
+      // 事件绑定函数
+      const mouseFn = e => {
+        console.log(e);
+        console.log(num++);
+      };
+
+      // 触发节流
+      window.addEventListener('mousemove', throttleFn(mouseFn, 1000));
+    </script>
+  </body>
+</html>

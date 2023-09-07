@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义pop数组方法
+      Array.prototype.pop = function () {
+        // 获取使用pop方法的数组
+        let arr = this;
+
+        // 获取数组的最后一项
+        let lastItem = arr[arr.length - 1];
+
+        // 如果数组的长度为0,就直接返回undefined
+        if (arr.length === 0) {
+          return undefined;
+        }
+
+        // 删除数组的最后一项
+        arr.length = arr.length - 1;
+
+        // 返回被删除项
+        return lastItem;
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      console.log(arr.pop());
+      console.log(arr);
+    </script>
+  </body>
+</html>

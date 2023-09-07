@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * new操作符做了什么?
+       *  1.在内存中创建一个空对象
+       *  2.隐式原型指向构造函数的显式原型
+       *  3.执行构造函数,this指向这个在内存中的空对象
+       *  4.返回这个对象
+       */
+
+      /**
+       * 参数:
+       *  fn:实例化的构造函数
+       *  ...args:构造函数中的参数
+       * */
+
+      function myNew(fn, ...args) {
+        // 1.在内存中创建一个空对象
+        const obj = {};
+        // 2.隐式原型指向构造函数的显式原型
+        obj.__proto__ = fn.prototype;
+        // 3.执行构造函数,this指向这个在内存中的空对象
+        fn.apply(obj, args);
+        // 4.返回这个对象
+        return obj;
+      }
+
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+      const person = myNew(Person, 'wzy', 18);
+      const person2 = new Person('wzy', 18);
+      console.log(person);
+      console.log(person2);
+    </script>
+  </body>
+</html>

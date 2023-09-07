@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 实现字符串的padStart方法,设置指定长度的字符,不足这个长度的用指定符号补齐,向前补齐
+      /**
+       * length:期望长度
+       * sym:补全字符,不传默认使用0
+       */
+      String.prototype.__proto__.myPadStart = function (length, sym) {
+        let str = this;
+
+        let newStr = '';
+
+        if (newLength < 0) return '当前字符数量已超过设置字符数量';
+
+        // 获取去除当前已有字符串之后的长度
+        let newLength = length - str.length - 1;
+        for (let i = newLength; i >= 0; i--) {
+          newStr += sym || '0';
+        }
+        newStr += str;
+        return newStr;
+      };
+
+      console.log('1222'.myPadStart(10));
+    </script>
+  </body>
+</html>

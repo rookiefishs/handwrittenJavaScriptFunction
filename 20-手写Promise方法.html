@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 创建自定义promise类
+      class MyPromise {
+        // 设置构造函数,接收执行器回调函数
+        constructor(execute) {
+          this.state = 'pendding';
+          this.result = null;
+
+          // 创建this变量
+          let _that = this;
+
+          // 设置执行器函数的resolve参数
+          function resolve(data) {
+            // 判断状态是否是pendding,promise的状态只能修改一次pendding->resolved   pendding->rejected
+            if (_that.state !== 'pendding') return;
+
+            // 设置默认值
+            _that.state = 'resolved';
+            _that.result = data;
+          }
+
+          // 设置执行器函数的reject参数
+          function reject(data) {
+            // 判断状态是否是pendding,promise的状态只能修改一次pendding->resolved   pendding->rejected
+            if (_that.state !== 'pendding') return;
+
+            // 设置默认值
+            _that.state = 'rejected';
+            _that.result = data;
+          }
+
+          // 执行 执行器函数
+          execute(resolve, reject);
+        }
+      }
+
+      let p = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('123');
+        }, 1000);
+      });
+      console.log(p);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义join数组方法
+      Array.prototype.join = function (str = '') {
+        // 判断参数是否为一个字符串,如果不是就抛出错误
+        if (!str instanceof String) throw 'execute is not a String';
+
+        // 目标数组
+        let targetArr = this;
+
+        // 定义一个新的字符串
+        let newStr = '';
+
+        // 遍历目标数组
+        for (let i = 0; i < targetArr.length; i++) {
+          // 判断是否是第一个元素
+          if (i === 0) {
+            // 如果是第一个元素就不拼接字符串
+            newStr += targetArr[i];
+          } else {
+            // 如果不是第一个元素就拼接字符串
+            newStr += str + targetArr[i];
+          }
+        }
+
+        // 返回拼接后的字符串
+        return newStr;
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      console.log(arr.join(''));
+    </script>
+  </body>
+</html>

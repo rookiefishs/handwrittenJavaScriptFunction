@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义unshift数组方法
+      // 接受一个data参数,并将data参数添加到数组的第一位,并将新数组的长度返回
+      Array.prototype.unshift = function (data) {
+        // 获取到循环的数组
+        let arr = this;
+
+        // 处理之后的新数组
+        let newArr = [];
+
+        // 判断数组是否有内容,如果没有内容就直接在第一个位置添加data
+        if (arr.length === 0) {
+          arr[0] = data;
+          // 直接返回数组长度
+          return 1;
+        }
+        // 循环数组
+        for (let i = 0; i < arr.length; i++) {
+          // 设置newArr的每一项,但是比原来的数组索引要加1
+          newArr[i + 1] = arr[i];
+        }
+        newArr[0] = data;
+
+        // 根据unshift的特性,将会修改源数组
+        for (let i = 0; i < newArr.length; i++) {
+          arr[i] = newArr[i];
+        }
+
+        // 返回最新的数组长度
+        return newArr.length;
+      };
+
+      let arr = [1, 2, 3, 4, 5, 6];
+      console.log(arr.unshift(0));
+      console.log(arr);
+    </script>
+  </body>
+</html>

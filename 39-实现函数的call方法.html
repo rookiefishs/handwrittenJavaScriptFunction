@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 自定义call函数方法
+      Function.prototype.call = function (s, ...arguments) {
+        // 根据s的不同类型,做出不同的处理 globalThis表示全局对象,在浏览器环境中就表示window,在nodejs环境中就表示global
+        s = s === null || s === undefined ? globalThis : Object(s);
+
+        // 创建一个独一无二,不会重复的key
+        let key = Symbol('temp');
+
+        // 将要执行的函数挂载到指定的对象中
+        Object.defineProperty(s, key, {
+          // 不允许被枚举
+          enumerable: false,
+          value: this,
+        });
+        console.log(s);
+
+        // 获取返回值
+        let result = s[key](...arguments);
+
+        // 删除key属性,优化
+        delete s[key];
+
+        // 返回返回值
+        return result;
+      };
+
+      let obj = {
+        a: 1,
+        add(a, b, c) {
+          return a + b + c + this.a;
+        },
+      };
+
+      let obj2 = {
+        a: 3,
+      };
+
+      // 这里将this改为obj2并执行add函数,add函数会获取this中的a属性,而obj2中的this.a属性为3,这里的值也就是9,说明call函数执行成功
+      console.log(obj.add.call(obj2, 1, 2, 3));
+    </script>
+  </body>
+</html>

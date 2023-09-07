@@ -1,0 +1,62 @@
+<!--
+* @Author:WangZhiYu
+* @Date: 2023/07/10 17:23:31
+* @LastEditors: WangZhiYu
+* @LastEditTime: 2023/07/10 17:23:31
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * js中对于大整数相加存在一定的精度问题,超出这个精度就可能出现错误或者其他的问题
+       */
+
+      /**
+       * 这里利用两位相加然后进位的方式来完成大整数相加(小学的两个数字相加然后进位的方式)
+       * @params {String} a
+       * @params {String} b
+       */
+      function sum(a, b) {
+        // 首先获取最大长度,用于对齐两个字符串的长度
+        let maxLen = Math.max(a.length, b.length)
+
+        // 对两个字符串进行前缀补0操作,不满足最大长度的前面补全0
+        a = a.padStart(maxLen, "0")
+        b = b.padStart(maxLen, "0")
+
+        // 进位标识符
+        let carry = 0
+
+        // 结果值
+        let result = ""
+
+        // 从后到前进行运算
+        for (let i = maxLen - 1; i >= 0; i--) {
+          // 将a和b的当前循环的数字相加
+          const sum = +a[i] + +b[i] + carry
+
+          // 获取相加之后得到的数值的个位数,并添加进result中
+          result = (sum % 10) + result
+
+          // 将carry进行向下取整,这样如果sum/10小于1就表示没有进位,向下取整就是0,如果大于1,例如1.9,就表示进1,向下取整为1
+          carry = Math.floor(sum / 10)
+        }
+
+        // 判断最终是否还存在进位,如果还有就拼接到最终数字的前面
+        if (carry) {
+          result = carry + result
+        }
+
+        // 如果不大于JS中的最大值就返回number格式的数字,反之就返回字符串格式的数字
+        return result >= Number.MAX_SAFE_INTEGER ? result : Number(result)
+      }
+      console.log(sum("116540650479685145352", "12654645813521"))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 定义需要深拷贝一个对象
+      const obj = {
+        name: 'wzy',
+        age: 18,
+        hobby: ['打游戏', '写代码', '跑步'],
+        myInfo: {
+          height: 180,
+          weight: 160,
+        },
+        sayHi() {
+          console.log('hi');
+        },
+      };
+
+      // 深拷贝函数
+      function LoopDeepCopy(obj) {
+        // 新建一个对象,这个对象就是深拷贝之后的对象
+        let newObj = {};
+        // 需要传入的obj必须是对象/数组/函数...
+        if (typeof obj === 'object') {
+          // 对传入的对象进行循环操作
+          for (let i in obj) {
+            // 当obj的某一项为数组触发
+            if (obj[i] instanceof Array) {
+              newObj[i] = LoopDeepCopy(obj[i]);
+              // 当obj的某一项为对象触发
+            } else if (obj[i] instanceof Object) {
+              newObj[i] = LoopDeepCopy(obj[i]);
+            } else {
+              newObj[i] = obj[i];
+            }
+          }
+        } else {
+          new Error('请传入对象/数组类型的数据');
+        }
+        // 返回新对象
+        return newObj;
+      }
+
+      // 获取新对象
+      const newObj = LoopDeepCopy(obj);
+      newObj.hobby[0] = 666;
+
+      // 老对象中的hobby没有被修改
+      console.log(obj, 'obj');
+      // 新对象中的hobby被修改了
+      console.log(newObj, 'newObj');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 2, 3];
+
+      // 定义数组原型push方法
+      arr['__proto__'].myPush = function (value) {
+        this[this.length] = value;
+      };
+
+      arr.myPush(4);
+      console.log(arr);
+    </script>
+  </body>
+</html>

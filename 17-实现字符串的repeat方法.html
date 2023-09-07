@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 实现字符串的repeat方法,repeat方法用于将指定字符重复指定次数
+      function myRepear(str, num) {
+        if (str.length === 0) {
+          return '请传入数字';
+        } else if (num <= 0) {
+          return '数字不能为负数或0';
+        } else {
+          let myStr = '';
+          for (let i = 0; i < num; i++) {
+            myStr += str;
+          }
+          return myStr;
+        }
+      }
+
+      console.log(myRepear('10085', 20));
+    </script>
+  </body>
+</html>

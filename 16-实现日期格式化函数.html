@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 实现日期格式化函数
+      function formatDate(date, format) {
+        // 获取年月日，时分秒
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        // 日期对应的格式化数据
+        let dateFormat = {
+          YYYY: year,
+          // 月份转换为字符串,然后不足两位的用0补齐
+          MM: month.toString().padStart(2, '0'),
+          M: month,
+          // 天数转换为字符串,然后不足两位的用0补齐
+          DD: day.toString().padStart(2, '0'),
+          D: day,
+          // 小时转换为字符串,然后不足两位的用0补齐
+          HH: hour.toString().padStart(2, '0'),
+          H: hour,
+          // 分钟转换为字符串,然后不足两位的用0补齐
+          mm: minute.toString().padStart(2, '0'),
+          m: minute,
+          // 小时转换为字符串,然后不足两位的用0补齐
+          ss: second.toString().padStart(2, '0'),
+          s: second,
+        };
+
+        let result = format;
+
+        // 循环格式化数据
+        for (const [key, value] of Object.entries(dateFormat)) {
+          // 将对应的数据替换到对应的字符上
+          result = result.replace(key, value);
+        }
+        return result;
+      }
+
+      console.log(formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss'));
+    </script>
+  </body>
+</html>
